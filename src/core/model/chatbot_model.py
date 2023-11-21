@@ -32,15 +32,15 @@ class OpenAiModel():
 
     def __init__(self):
         self.__load_default_document_list()
-        chunk_list = [self.__split_document(documents) for documents in self.document_list]
+        chunk_list = self.__split_document(self.document_list)
         self.__embed_data(chunk_list)
 
-    def __find_loader(self, file_name: str):
+    def __get_loader(self, file_name: str):
         logger.info(f'load file : {file_name}')
         if '.csv' in file_name:
-            loader = CSVLoader(file_name)
+            loader = CSVLoader(file_name, encoding='utf-8')
         elif '.txt' in file_name:
-            loader = TextLoader(file_name)
+            loader = TextLoader(file_name, encoding='utf-8')
         elif '.docx' in file_name:
             loader = Docx2txtLoader(file_name)
         elif '.pdf' in file_name:
@@ -55,9 +55,10 @@ class OpenAiModel():
         file_names = os.listdir(base_path)
         for file_name in file_names:
             file_name = base_path + '/' + file_name
-            loader = self.__find_loader(file_name)
+            loader = self.__get_loader(file_name)
             result_list.extend(loader.load_and_split())
         self.document_list = result_list
+        print(f"document_list : {self.document_list}")
 
     def __tiktoken_len(self, document):
         tokenizer = tiktoken.get_encoding("cl100k_base") # openai 기반
@@ -95,9 +96,9 @@ class OpenAiModel():
 
     def load_file(self, file):
         file_name = file.name
-        loader = self.__find_loader(file_name)
+        loader = self.__get_loader(file_name)
         self.document_list.extend(loader.load_and_split())
-        chunk_list = [self.__split_document(document) for document in self.document_list]
+        chunk_list = self.__split_document(self.document_list)
         self.__embed_data(chunk_list)
 
     def get_conversation_chain(self, openai_api_key: str):
