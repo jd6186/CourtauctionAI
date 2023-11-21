@@ -70,3 +70,6 @@ def main():
 
         # 응답 결과 저장
         st.session_state.messages.append({"role": "assistant", "content": response})
+
+# 실행
+main()

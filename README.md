@@ -1,7 +1,7 @@
 # CourtauctionAI
 * 부동산 구매 시 참고가 되는 아파트 찾기 AI Chatbot
 * 데이터 출처가 불분명해 상업적으로 이용 시 불이익이 발생할 수 있음을 미리 고지합니다.
-
+* 기타 부가 정보는 노션 참고 : https://www.notion.so/AI-Chatbot-1855bdec7e57446e8ade57db8d01de40
 
 ## 1. 기획
 
@@ -47,3 +47,4 @@ LLM : OpenAI(gpt3.5 turbo)
 
 1. Streamlit 라이브러리를 활용해 배포 환경 구현
 2. local 실행방법 : `streamlit run streamlit_refer.py`
+3. Streamlit 특성 상 소스코드 변경 시 Reboot 버튼을 클릭해 새롭게 배포해야함
