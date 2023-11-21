@@ -43,7 +43,7 @@ LLM : OpenAI(gpt3.5 turbo)
 2. 공식 사이트 : [Streamlit • A faster way to build and share data apps](https://streamlit.io/)
     
 
-## 5. REST API 서버 구성
+## 5. 배포 환경 구성
 
-1. FastAPI 라이브러리를 활용해 REST API 서버 구현
-2. local 실행방법 : `hypercorn main:app --reload`
+1. Streamlit 라이브러리를 활용해 배포 환경 구현
+2. local 실행방법 : `streamlit run streamlit_refer.py`
