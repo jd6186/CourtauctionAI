@@ -8,7 +8,7 @@ from loguru import logger
 from langchain.chat_models import ChatOpenAI
 
 # Document Loader
-from src.core.model.document_loader import load_router
+# from src.core.model.document_loader import load_router
 
 # LangChain Spliter
 from langchain.text_splitter import RecursiveCharacterTextSplitter
@@ -25,12 +25,10 @@ from langchain.chains import ConversationalRetrievalChain # 메모리를 가진�
 from langchain.memory import ConversationBufferMemory # 데이터를 몇개 저장할지 결정하는 버퍼
 
 
-
 class OpenAiModel():
     vector_db = None
     conversation_chain = None
     document_list = []
-
 
     def __init__(self):
         self.__load_default_document_list()
@@ -105,3 +103,7 @@ class OpenAiModel():
     def get_conversation_chain(self, openai_api_key: str):
         self.__make_conversation_chain(openai_api_key)
         return self.conversation_chain
+
+
+if __name__  == "__main__":
+    OpenAiModel()
