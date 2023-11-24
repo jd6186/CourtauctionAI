@@ -6,7 +6,7 @@ from langchain.chat_models import ChatOpenAI
 from langchain.tools import Tool
 
 # 환경변수에서 API 키를 가져온다.
-OPENAI_API_KEY = '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' # os.getenv("OPENAI_API_KEY")
+OPENAI_API_KEY = 'sk-03h3bkFJpTeBGlDDbtNSzql1EtUs' # os.getenv("OPENAI_API_KEY")
 llm = ChatOpenAI(openai_api_key=OPENAI_API_KEY, model_name="gpt-3.5-turbo", temperature=0)  # GPT 3.5 터보 사용
 
 tools = [

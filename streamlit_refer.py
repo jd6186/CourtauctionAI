@@ -30,7 +30,7 @@ with st.sidebar:
 if process:
     if not openai_api_key:
         # TODO - 삭제 필요
-        openai_api_key = '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'
+        openai_api_key = 'sk-03hkFJpTeBGlDDbtNSzql1EtUs'
         # st.info("Please enter your OpenAI API Key")
         # st.stop()
 
