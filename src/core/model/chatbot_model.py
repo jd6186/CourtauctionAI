@@ -25,6 +25,9 @@ from langchain.chains import ConversationalRetrievalChain # 메모리를 가진�
 from langchain.memory import ConversationBufferMemory # 데이터를 몇개 저장할지 결정하는 버퍼
 
 
+documents = []
+base_path = "./documents"
+
 class OpenAiModel():
     vector_db = None
     conversation_chain = None
@@ -32,11 +35,11 @@ class OpenAiModel():
 
     def __init__(self):
         self.__load_default_document_list()
-        chunk_list = self.__split_document(self.document_list)
+        chunk_list = self.__split_document()
         self.__embed_data(chunk_list)
 
-    def __get_loader(self, file_name: str):
-        logger.info(f'load file : {file_name}')
+    def __get_loader_by_file_path(self, file_name: str):
+        logger.info(f'load file path : {file_name}')
         if '.csv' in file_name:
             loader = CSVLoader(file_name, encoding='utf-8')
         elif '.txt' in file_name:
@@ -49,24 +52,36 @@ class OpenAiModel():
             raise Exception('지원하지 않는 파일 형식입니다.')
         return loader
 
+    def __get_loader_by_file_object(self, uploaded_file):
+        logger.info(f'load file object : {uploaded_file}')
+        file_path = base_path + "/" + uploaded_file.name
+        # 파일 존재 여부 확인
+        if os.path.exists(file_path):
+            raise Exception(f'File already found: {file_path}')
+
+        # 임시 파일에 내용 쓰기
+        with open(file_path, 'wb') as f:
+            f.write(uploaded_file.getbuffer())
+
+        # 임시 파일을 사용해서 로딩 작업 수행
+        return self.__get_loader_by_file_path(file_path)
+
     def __load_default_document_list(self):
         result_list = []
-        base_path = './documents'
         file_names = os.listdir(base_path)
         for file_name in file_names:
             file_name = base_path + '/' + file_name
-            loader = self.__get_loader(file_name)
+            loader = self.__get_loader_by_file_path(file_name)
             result_list.extend(loader.load_and_split())
         self.document_list = result_list
-        print(f"document_list : {self.document_list}")
 
     def __tiktoken_len(self, document):
         tokenizer = tiktoken.get_encoding("cl100k_base") # openai 기반
         return len(tokenizer.encode(document))
 
-    def __split_document(self, document):
+    def __split_document(self):
         text_splitter = RecursiveCharacterTextSplitter(chunk_size=900, chunk_overlap=100, length_function=self.__tiktoken_len)
-        return text_splitter.split_documents(document)
+        return text_splitter.split_documents(self.document_list)
 
     def __embed_data(self, chunk_list: list):
         persist_directory = 'db'
@@ -80,7 +95,6 @@ class OpenAiModel():
             embedding=embedding,
             persist_directory=persist_directory
         )
-        print(f"vectordb : {self.vectordb}")
 
     def __make_conversation_chain(self, openai_api_key: str):
         llm = ChatOpenAI(openai_api_key=openai_api_key, model_name="gpt-3.5-turbo", temperature=0) # GPT 3.5 터보 사용
@@ -94,17 +108,18 @@ class OpenAiModel():
             verbose=True, # 출력 과정을 로깅하겠다
         )
 
-    def load_file(self, file):
-        file_name = file.name
-        loader = self.__get_loader(file_name)
-        self.document_list.extend(loader.load_and_split())
-        chunk_list = self.__split_document(self.document_list)
-        self.__embed_data(chunk_list)
+    def load_file_list(self, uploaded_file_list: list):
+        for uploaded_file in uploaded_file_list:
+            upload_file_name = uploaded_file.name
+            if upload_file_name in documents:
+                pass
+            documents.append(upload_file_name)
+            print(f"uploaded_file object : {uploaded_file}")
+            loader = self.__get_loader_by_file_object(uploaded_file)
+            self.document_list.extend(loader.load_and_split())
+            chunk_list = self.__split_document()
+            self.__embed_data(chunk_list)
 
     def get_conversation_chain(self, openai_api_key: str):
         self.__make_conversation_chain(openai_api_key)
         return self.conversation_chain
-
-
-if __name__  == "__main__":
-    OpenAiModel()

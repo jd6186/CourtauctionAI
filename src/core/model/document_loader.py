@@ -2,7 +2,7 @@
 from langchain.document_loaders import CSVLoader, TextLoader, PyPDFLoader, Docx2txtLoader
 from loguru import logger
 
-base_file_dir = './documents/'
+base_file_dir = '../../../documents/'
 
 def load_file(file_name: str):
     file_name = base_file_dir + file_name
