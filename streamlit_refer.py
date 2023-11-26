@@ -18,7 +18,7 @@ with st.sidebar:
 
 # ######################################### Streamlit Session #########################################
 # TODO - 아래 openai_api_key 부분은 삭제 필요
-OPENAI_API_KEY = "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"
+OPENAI_API_KEY = "..."
 openai_api_key = OPENAI_API_KEY
 # openai_api_key = os.getenv("OPENAI_API_KEY")
 chat_model = OpenAiModel()
