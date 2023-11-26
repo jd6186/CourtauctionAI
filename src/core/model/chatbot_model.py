@@ -32,6 +32,7 @@ class OpenAiModel():
     vector_db = None
     conversation_chain = None
     document_list = []
+    llm = None
 
     def __init__(self):
         self.__load_default_document_list()
@@ -90,18 +91,18 @@ class OpenAiModel():
             model_kwargs={"device": "cpu"},
             encode_kwargs={"normalize_embeddings": True},
         )
-        self.vectordb = Chroma.from_documents(
+        self.vector_db = Chroma.from_documents(
             documents=chunk_list,
             embedding=embedding,
             persist_directory=persist_directory
         )
 
     def __make_conversation_chain(self, openai_api_key: str):
-        llm = ChatOpenAI(openai_api_key=openai_api_key, model_name="gpt-3.5-turbo", temperature=0) # GPT 3.5 터보 사용
+        self.llm = ChatOpenAI(openai_api_key=openai_api_key, model_name="gpt-3.5-turbo", temperature=0) # GPT 3.5 터보 사용
         self.conversation_chain = ConversationalRetrievalChain.from_llm(
-            llm=llm,
+            llm=self.llm,
             chain_type="stuff", # stuff 모드로 실행 > 쿼리 그대로 1회 질문
-            retriever=self.vectordb.as_retriever(search_type="mmr", vervose=True), # mmr 모드로 실행하며 출력 과정을 로깅하겠다
+            retriever=self.vector_db.as_retriever(search_type="mmr", vervose=True), # mmr 모드로 실행하며 출력 과정을 로깅하겠다
             memory=ConversationBufferMemory(memory_key="chat_history", return_messages=True, output_key="answer"), # 답변에 해당하는 부분만 히스토리에 담겠다는 뜻
             get_chat_history=lambda h: h, # 메모리가 들어온 그대로 쳇 히스토리에 넣겠다
             return_source_documents=True, # llm이 참조한 문서 출력
@@ -122,4 +123,5 @@ class OpenAiModel():
 
     def get_conversation_chain(self, openai_api_key: str):
         self.__make_conversation_chain(openai_api_key)
+        print(f"Type : {type(self.conversation_chain)}")
         return self.conversation_chain
