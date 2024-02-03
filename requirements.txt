@@ -1,12 +1,9 @@
-# AI
-langchain~=0.0.331
-tiktoken~=0.5.1
-chromadb~=0.4.15
-
-
-# Application
-fastapi==0.97.0
-hypercorn==0.14.3
+# API
+fastapi==0.109.0
+hypercorn==0.16.0
+requests==2.31.0
+pytest-html==4.1.1
+httpx==0.26.0
 sqlalchemy==1.4.25
 python-dotenv==1.0.0
 pydantic==1.10.9
@@ -14,9 +11,10 @@ pandas==2.0.2
 numpy==1.25.0
 openpyxl==3.1.2
 python-multipart==0.0.6
-loguru
-streamlit
-sentence-transformers
-pypdf
-openai
-numexpr
+PyJWT==2.8.0
+
+# Playground
+streamlit==1.28.2
+
+# AI
+openai==1.11.0
