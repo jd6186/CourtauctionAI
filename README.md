@@ -15,36 +15,17 @@
 
 
 ## 2. 데이터 출처
-
 1. 관련 데이터는 한국 부동산 **[국토교통부 실거래가정보 Open API](https://data.go.kr/dataset/3050988/openapi.do)를 활용해 데이터를 수집**
     - 아파트 실거래가 : [https://www.data.go.kr/data/15057511/openapi.do](https://www.data.go.kr/data/15057511/openapi.do)
     - 아파트 전월세 자료 : [https://www.data.go.kr/data/15058017/openapi.do](https://www.data.go.kr/data/15058017/openapi.do)
-2. 법원경매 사이트 크롤링
 
 
-## 3. RAG 구성
-
-![RAG.png](./static_file/RAG.png)
-
-Document Loading, Splitting : LangChain 내부 객체 활용
-
-Framework : LangChain
-
-VectorDB : chromaDB(Faiss가 속도가 빠르지만 사용하지 않은 이유는 데이터를 영구 저장하기 위함)
-
-Embedding Model : Hugging Face()
-
-LLM : OpenAI(gpt3.5 turbo)
-
-
-## 4. UI 화면 구성
-
+## 3. UI 화면 구성
 1. Streamlit 라이브러리를 활용해 UI 구현
 2. 공식 사이트 : [Streamlit • A faster way to build and share data apps](https://streamlit.io/)
-    
 
-## 5. 배포 환경 구성
 
+## 4. 배포 환경 구성
 1. Streamlit 라이브러리를 활용해 배포 환경 구현
 2. local 실행방법 : `streamlit run streamlit_refer.py`
 3. Streamlit 특성 상 소스코드 변경 시 Reboot 버튼을 클릭해 새롭게 배포해야함

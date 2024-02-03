@@ -17,10 +17,6 @@ with st.sidebar:
 
 
 # ######################################### Streamlit Session #########################################
-# TODO - 아래 openai_api_key 부분은 삭제 필요
-OPENAI_API_KEY = "..."
-openai_api_key = OPENAI_API_KEY
-# openai_api_key = os.getenv("OPENAI_API_KEY")
 chat_model = OpenAiModel()
 if "conversation" not in st.session_state:
     st.session_state.conversation = None
@@ -42,8 +38,7 @@ if process:
     if not openai_api_key:
         st.info("Please enter your OpenAI API Key")
         st.stop()
-    conversation_chain = chat_model.get_conversation_chain(openai_api_key)
-    st.session_state.conversation = ElectricityAgent(OPENAI_API_KEY, [1000000001, 1000000002])
+    st.session_state.conversation = ElectricityAgent(openai_api_key, [1000000001, 1000000002])
     if uploaded_file_list and len(uploaded_file_list) > 0:
         chat_model.load_file_list(uploaded_file_list)
 
